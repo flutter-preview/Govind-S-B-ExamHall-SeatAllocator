@@ -1,12 +1,14 @@
 // TODO: delta as an argument
 pub struct Arguments {
     pub randomize: Option<usize>,
+    pub equalize: bool,
     pub input_db_path: String,
     pub output_db_path: String,
 }
 
 pub fn get() -> Arguments {
     let mut delta = None;
+    let mut equalize = false;
     let mut paths = Vec::with_capacity(3);
     let mut args = std::env::args().into_iter();
     while let Some(arg) = args.next() {
@@ -19,6 +21,7 @@ pub fn get() -> Arguments {
                         .expect("invalid argument for delta"),
                 )
             }
+            "-e" | "--equalize" => equalize = true,
             _ => paths.push(arg),
         }
     }
@@ -31,6 +34,7 @@ pub fn get() -> Arguments {
 
     Arguments {
         randomize: delta,
+        equalize,
         input_db_path: input_db_path.to_owned(),
         output_db_path: output_db_path.to_owned(),
     }
